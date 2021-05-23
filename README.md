@@ -2,25 +2,28 @@
 Deep learning based object detection using YOLOv3 with OpenCV
 
 ## Fork:    
-1. https://github.com/krutikabapat/DNN-Object-Detection-YOLOv3.git  
+https://github.com/krutikabapat/DNN-Object-Detection-YOLOv3.git  
 
-## Requirements:-  
+## Requirements:
 
-1. OpenCV 3.4.2 and above.  
+OpenCV 3.4.2 and above.  
 
-## File structure:-
+## File structure:
 
-1. Models.sh (contains link to model files).  
-3. yolo.cpp (c++ code for yolo).    
+1. Models.sh (contains link to model files).
+2. build_608_yolo.cpp (c++ code for yolo).
+3. build_416_yolo.cpp (c++ code for yolo).
+4. build_320_yolo.cpp (c++ code for yolo).
+5. build_tiny_yolo.cpp (c++ code for yolo).
 
-## Compile:-  
+## Compile:
 
-1. <code> g++ yolo.cpp -o test_yolo `pkg-config --cflags --libs opencv` </code>
+<code> g++ build_xxx_yolo.cpp -o xxx_yolo.out `pkg-config --cflags --libs opencv` </code>
+
+Example: g++ build_608_yolo.cpp -o 608_yolo.out `pkg-config --cflags --libs opencv`
 
 ## Run
 
-1. <code> ./test_yolo "<path-to-img>" </code>
+<code> ./xxx_yolo.out "path-to-img" </code>
 
-
-
-
+Example: ./608_yolo.out "test_img4.jpg"

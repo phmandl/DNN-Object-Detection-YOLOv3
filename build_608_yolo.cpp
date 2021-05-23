@@ -1,13 +1,12 @@
-#include<fstream>
-#include<sstream>
-#include<iostream>
-
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 // Required for dnn modules.
-#include <opencv2/dnn.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-#include<opencv2/opencv.hpp>
+#include <opencv2/dnn/dnn.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv.hpp>
 
 using namespace std;
 using namespace cv;
@@ -17,8 +16,8 @@ using namespace dnn;
 float conf_threshold = 0.5;
 // nms threshold
 float nms = 0.4;
-int width = 416;
-int height = 416;
+int width = 608; //608 //416 //320
+int height = 608;
 
 vector<string> classes;
 
@@ -35,24 +34,26 @@ vector<String> getOutputsNames(const Net& net);
 int main( int argc, char** argv){
 
     // get labels of all classes
-    string classesFile = "coco.names";
+    string classesFile = "model_data/coco.names";
     ifstream ifs(classesFile.c_str());
     string line;
     while (getline(ifs, line)) classes.push_back(line);
     
     // load model weights and architecture
-    String configuration = "yolov3.cfg";
-    String model = "yolov3.weights";
+    String configuration = "model_data/yolov3.cfg";
+    String model = "model_data/yolov3.weights";
 
     // Load the network
     Net net = readNetFromDarknet(configuration, model);
+    net.setPreferableBackend(0); // SET BACKEND: OPENCL
+    net.setPreferableTarget(0); // SET TARGET: CPU; GPU; iGPU
     Mat frame, blob;
     
     // read the image
     frame = imread(argv[1],CV_LOAD_IMAGE_COLOR);
     
    // convert image to blob
-    blobFromImage(frame, blob, 1/255, cvSize(width,height),Scalar(0,0,0), true, false);
+    blobFromImage(frame, blob, 1.0/255, cvSize(width,height), Scalar(0,0,0), true, false);
     net.setInput(blob);
 
     vector<Mat> outs;
@@ -71,6 +72,7 @@ int main( int argc, char** argv){
     static const string kWinName = "Deep learning object detection in OpenCV";
     
     imshow(kWinName, frame);
+    waitKey(0);
 }
 
 void remove_box(Mat& frame, const vector<Mat>& outs)
@@ -90,8 +92,10 @@ void remove_box(Mat& frame, const vector<Mat>& outs)
             Mat scores = outs[i].row(j).colRange(5, outs[i].cols);
             Point classIdPoint;
             double confidence;
+
             // Get the value and location of the maximum score
             minMaxLoc(scores, 0, &confidence, 0, &classIdPoint);
+
             if (confidence > conf_threshold)
             {
                 int centerX = (int)(data[0] * frame.cols);
@@ -107,6 +111,10 @@ void remove_box(Mat& frame, const vector<Mat>& outs)
             }
         }
     }
+
+    // for (vector<int>::const_iterator i = classIds.begin(); i != classIds.end(); ++i)
+    // cout << *i << ' ';
+
     
     // Perform non maximum suppression to eliminate redundant overlapping boxes with
     // lower confidences
