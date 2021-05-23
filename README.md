@@ -1,15 +1,8 @@
 # DNN-Object-Detection-YOLO3
 Deep learning based object detection using YOLOv3 with OpenCV
 
-## Reference Blog    
-1. https://www.pyimagesearch.com/2017/09/11/object-detection-with-deep-learning-and-opencv/    
-## There are three main object detectors using deep learning:-
-
-1. R-CNN (Selective Search), Fast R-CNN( Region proposed Network and R-CNN).  
-2. Single shot detectors (SSD).  
-3. YOLO.  
-
-Both SSD and YOLO use one-stage detector strategy.  
+## Fork:    
+1. https://github.com/krutikabapat/DNN-Object-Detection-YOLOv3.git  
 
 ## Requirements:-  
 
@@ -18,25 +11,15 @@ Both SSD and YOLO use one-stage detector strategy.
 ## File structure:-
 
 1. Models.sh (contains link to model files).  
-2. yolo.py (python code for yolo).  
-3. yolo.cpp (c++ code for yolo).  
-5. lady.jpeg (input image file).  
-6. video.mp4
+3. yolo.cpp (c++ code for yolo).    
 
-## Usage:-  
+## Compile:-  
 
-For python:-  
+1. <code> g++ yolo.cpp -o test_yolo `pkg-config --cflags --libs opencv` </code>
 
-1. <code> python3 yolo.py 'path to image' . </code>
-2. <code> python3 yolo_video.py --video 'path to video' </code>  
+## Run
 
-For C++
-
-1. <code> g++ yolo.cpp `pkg-config --cflags --libs opencv` </code>
-## Run time:-
-
-1. 0.7514 seconds  
-
+1. <code> ./test_yolo "<path-to-img>" </code>
 
 
 
